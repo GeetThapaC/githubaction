@@ -1,13 +1,842 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Northstar Studio</title>
+  <meta name="description" content="Northstar Studio helps ambitious brands grow with strategy, design, and digital experiences." />
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0d1b2a;
+      --panel: rgba(15, 27, 42, 0.8);
+      --panel-strong: #101f32;
+      --card: rgba(17, 27, 42, 0.78);
+      --line: rgba(148, 163, 184, 0.18);
+      --text: #ecf3ff;
+      --muted: #a9bad1;
+      --primary: #74d7c7;
+      --secondary: #7aa2ff;
+      --accent: #f8b95d;
+      --shadow: 0 30px 70px rgba(3, 7, 18, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(122, 162, 255, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(116, 215, 199, 0.16), transparent 32%),
+        linear-gradient(135deg, var(--bg) 0%, #0b1421 45%, #0e1d2d 100%);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    img { max-width: 100%; display: block; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(7, 17, 31, 0.55);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 78px;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.88rem;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #061018;
+      box-shadow: 0 12px 30px rgba(116, 215, 199, 0.45);
+      font-weight: 800;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.45rem;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 32px rgba(113, 158, 255, 0.22);
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--primary), #9fe3d7);
+      color: #061a1d;
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 88px 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 42px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(116, 215, 199, 0.25);
+      background: rgba(116, 215, 199, 0.06);
+      color: var(--primary);
+      padding: 0.48rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 1.2rem 0 1rem;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 0.98;
+      letter-spacing: -0.06em;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 620px;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .hero-meta strong {
+      display: block;
+      color: var(--text);
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+
+    .device {
+      position: relative;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(16, 31, 50, 0.96), rgba(10, 16, 27, 0.94));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 18px;
+      max-width: 520px;
+      margin-left: auto;
+    }
+
+    .device::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(116, 215, 199, 0.14), transparent 35%, rgba(122, 162, 255, 0.18));
+      pointer-events: none;
+    }
+
+    .device-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.85rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .dots {
+      display: inline-flex;
+      gap: 8px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dots span:nth-child(1) { background: #f87171; }
+    .dots span:nth-child(2) { background: #fbbf24; }
+    .dots span:nth-child(3) { background: #4ade80; }
+
+    .dashboard {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 20px;
+      padding: 20px 10px 8px;
+    }
+
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .stat-box {
+      background: rgba(9, 17, 29, 0.7);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 16px 12px;
+    }
+
+    .stat-box .label {
+      color: var(--muted);
+      font-size: 0.73rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-box .value {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .chart {
+      height: 120px;
+      border-radius: 16px;
+      background:
+        linear-gradient(180deg, rgba(116, 215, 199, 0.12), rgba(122, 162, 255, 0.05)),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        rgba(9, 17, 29, 0.7);
+      background-size: auto, 38px 38px, 38px 38px, cover;
+      position: relative;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .chart svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .section {
+      padding: 52px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 34px;
+    }
+
+    .section-header h2 {
+      margin: 0.7rem 0 0.8rem;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.05em;
+    }
+
+    .section-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.04rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      background: rgba(15, 27, 42, 0.74);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px 22px;
+      box-shadow: inset 0 1px rgba(255,255,255,0.02);
+    }
+
+    .icon-wrap {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(116, 215, 199, 0.2), rgba(122, 162, 255, 0.18));
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .logo-strip {
+      padding: 14px 0 30px;
+    }
+
+    .logo-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      align-items: center;
+      opacity: 0.76;
+      color: rgba(236, 243, 255, 0.7);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 18px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(17, 27, 42, 0.45);
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 24px;
+    }
+
+    .process-card {
+      position: relative;
+      padding: 28px 24px 22px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(16, 31, 50, 0.9), rgba(15, 22, 33, 0.72));
+      border: 1px solid var(--line);
+    }
+
+    .process-number {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(116, 215, 199, 0.22), rgba(122, 162, 255, 0.22));
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+
+    .process-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.25rem;
+    }
+
+    .process-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: stretch;
+      margin-top: 26px;
+    }
+
+    .quote-panel, .metrics-panel {
+      background: rgba(15, 27, 42, 0.76);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 28px;
+    }
+
+    .quote-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+    }
+
+    .quote-mark {
+      font-size: 4rem;
+      line-height: 1;
+      color: rgba(116, 215, 199, 0.62);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .quote-panel p {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #e5edf8;
+    }
+
+    .person {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: #07111f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .person strong { display: block; }
+    .person span { color: var(--muted); font-size: 0.85rem; }
+
+    .metrics-panel {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .metric {
+      background: rgba(9, 17, 29, 0.7);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 18px;
+      padding: 20px 18px;
+    }
+
+    .metric .num {
+      display: block;
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      margin-top: 8px;
+      display: block;
+    }
+
+    .cta {
+      padding: 32px 0 74px;
+    }
+
+    .cta-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 32px 32px;
+      border-radius: 28px;
+      border: 1px solid rgba(116, 215, 199, 0.22);
+      background:
+        radial-gradient(circle at left center, rgba(116, 215, 199, 0.12), transparent 38%),
+        rgba(11, 19, 29, 0.82);
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box h3 {
+      margin: 0 0 6px;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      letter-spacing: -0.05em;
+    }
+
+    .cta-box p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 42px;
+      color: var(--muted);
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid,
+      .results,
+      .feature-grid,
+      .process-grid,
+      .logo-row {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .cta-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding-top: 56px;
+      }
+
+      .nav-actions .button.secondary {
+        display: none;
+      }
+
+      .stats-row,
+      .metrics-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .device {
+        margin-left: 0;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>This is a simple HTML page.</p>
-    <p>my name is John doe.</p>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="#" class="brand" aria-label="Northstar Studio home">
+        <span class="brand-mark">N</span>
+        <span>Northstar</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#services">Services</a>
+        <a href="#process">Process</a>
+        <a href="#results">Results</a>
+        <a href="#insights">Insights</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="button secondary" href="#contact">Log in</a>
+        <a class="button primary" href="#contact">Book a consult</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Strategy • Design • Growth</span>
+          <h1>Turn bold ideas into standout businesses.</h1>
+          <p class="lead">
+            We design digital experiences and growth systems that help founders, brands, and teams move faster, look sharper, and win more attention.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button primary" href="#contact">Start your project</a>
+            <a class="button secondary" href="#services">Explore services</a>
+          </div>
+
+          <div class="hero-meta">
+            <div>
+              <strong>240+</strong>
+              launches delivered
+            </div>
+            <div>
+              <strong>4.9/5</strong>
+              average client rating
+            </div>
+            <div>
+              <strong>12x</strong>
+              growth campaigns
+            </div>
+          </div>
+        </div>
+
+        <div class="device" aria-label="Product dashboard preview">
+          <div class="device-topbar">
+            <div class="dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span>northstar.ai</span>
+          </div>
+
+          <div class="dashboard">
+            <div class="dashboard-card">
+              <small style="color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">Performance overview</small>
+              <div class="stats-row">
+                <div class="stat-box">
+                  <span class="label">Revenue</span>
+                  <span class="value">$148K</span>
+                </div>
+                <div class="stat-box">
+                  <span class="label">Reach</span>
+                  <span class="value">2.3M</span>
+                </div>
+                <div class="stat-box">
+                  <span class="label">ROAS</span>
+                  <span class="value">8.4x</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <small style="color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em;">Growth curve</small>
+              <div class="chart" aria-hidden="true">
+                <svg viewBox="0 0 380 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="lineGlow" x1="0" x2="1">
+                      <stop offset="0%" stop-color="#74d7c7" />
+                      <stop offset="100%" stop-color="#7aa2ff" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,90 C50,85 65,60 95,64 C120,68 150,44 170,50 C195,58 220,18 260,25 C285,30 310,12 335,20 C350,25 362,15 380,10 L380,120 L0,120 Z" fill="rgba(116,215,199,0.12)"/>
+                  <path d="M0,92 C50,86 65,62 95,66 C120,68 150,42 170,52 C195,60 220,20 260,26 C285,31 310,12 335,20 C350,24 362,16 380,12" fill="none" stroke="url(#lineGlow)" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="logo-strip" aria-label="Client logos">
+      <div class="container">
+        <div class="logo-row">
+          <span>Nova</span>
+          <span>Beacon</span>
+          <span>Helio</span>
+          <span>Summit</span>
+          <span>Vanta</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">What we do</span>
+          <h2>Built to help ambitious brands move faster.</h2>
+          <p>From strategic planning to polished digital execution, we craft systems that make brands memorable and measurable.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="icon-wrap">✦</div>
+            <h3>Brand Strategy</h3>
+            <p>Positioning, messaging, and growth planning designed to sharpen your value and connect with the right audience.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-wrap">▣</div>
+            <h3>Creative Design</h3>
+            <p>Distinctive visual systems and product experiences that balance clarity, emotion, and conversion.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="icon-wrap">◎</div>
+            <h3>Growth Systems</h3>
+            <p>Campaigns, funnels, and analytics frameworks that turn attention into traction and recurring performance.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Our process</span>
+          <h2>A clear path from vision to momentum.</h2>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-card">
+            <div class="process-number">01</div>
+            <h3>Discover</h3>
+            <p>We align on your goals, market realities, audience needs, and the ideas that unlock momentum.</p>
+          </article>
+
+          <article class="process-card">
+            <div class="process-number">02</div>
+            <h3>Design</h3>
+            <p>We shape a focused strategy and a premium experience built to look credible and convert with confidence.</p>
+          </article>
+
+          <article class="process-card">
+            <div class="process-number">03</div>
+            <h3>Deliver</h3>
+            <p>We launch, optimize, and support every touchpoint so your team keeps compounding results over time.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="results">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">Client outcomes</span>
+          <h2>Results that speak for themselves.</h2>
+        </div>
+
+        <div class="results">
+          <div class="quote-panel">
+            <div>
+              <div class="quote-mark">“</div>
+              <p>Northstar helped us rethink our positioning, refresh the customer journey, and turn our most important campaigns into a much stronger growth engine.</p>
+            </div>
+
+            <div class="person">
+              <div class="avatar">AL</div>
+              <div>
+                <strong>Amelia Lee</strong>
+                <span>VP of Marketing, Vanta Labs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="metrics-panel">
+            <div class="metric">
+              <span class="num">3.4x</span>
+              <span class="label">More qualified pipeline</span>
+            </div>
+            <div class="metric">
+              <span class="num">67%</span>
+              <span class="label">Lower acquisition cost</span>
+            </div>
+            <div class="metric">
+              <span class="num">31%</span>
+              <span class="label">Lift in conversion</span>
+            </div>
+            <div class="metric">
+              <span class="num">14 days</span>
+              <span class="label">Average launch timeline</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="contact">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h3>Ready to build something remarkable?</h3>
+            <p>Let’s turn your next idea into a polished brand experience that performs.</p>
+          </div>
+          <a href="mailto:hello@northstar.studio" class="button primary">hello@northstar.studio</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div class="brand" aria-label="Northstar Studio brand">
+        <span class="brand-mark">N</span>
+        <span>Northstar</span>
+      </div>
+      <span>© 2026 Northstar Studio. Crafted for growth.</span>
+    </div>
+  </footer>
 </body>
 </html>
